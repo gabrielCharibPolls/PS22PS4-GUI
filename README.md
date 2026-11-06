@@ -56,6 +56,7 @@ No — see the [compatibility list](https://www.psdevwiki.com/ps4/PS2_Classics_E
 
 ### Credit
 
+- [gabrielCharibPolls](https://github.com/gabrielCharibPolls) — maintainer
 - [Nazky](https://github.com/Nazky/PS22PS4-GUI) — original GUI
 - [CyB1K](https://github.com/CyB1K) — PS4 Fake PKG Tools
 - [Markus95](https://twitter.com/Markus00095) — PS22PS4 / PS22PS5

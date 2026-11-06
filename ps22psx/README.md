@@ -62,5 +62,6 @@ pytest -q
 
 ## Credits
 
+- Maintainer: [gabrielCharibPolls](https://github.com/gabrielCharibPolls)
 - Original GUI: [Nazky/PS22PS4-GUI](https://github.com/Nazky/PS22PS4-GUI)
 - Tools lineage: CyB1K PS4 Fake PKG Tools, Markus95 PS22PS4/PS22PS5
