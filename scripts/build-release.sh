@@ -12,7 +12,7 @@ EMU_SRC="$ROOT/ps22psx/bin/emulators/JakV2.pkg"
 
 die() { echo "error: $*" >&2; exit 1; }
 
-[[ -x "$TOOLS_SRC/orbis-pub-cmd.exe" ]] || die "missing tools in ps22psx/bin/tools"
+[[ -f "$TOOLS_SRC/orbis-pub-cmd.exe" ]] || die "missing tools in ps22psx/bin/tools"
 [[ -f "$EMU_SRC" ]] || die "missing emulator JakV2.pkg"
 
 echo "==> Cleaning dist"

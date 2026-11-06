@@ -53,6 +53,8 @@ pytest -q
 
 ## Credits
 
+Human credits only — see [../CONTRIBUTORS.md](../CONTRIBUTORS.md).
+
 - Maintainer: [gabrielCharibPolls](https://github.com/gabrielCharibPolls)
 - Original GUI: [Nazky/PS22PS4-GUI](https://github.com/Nazky/PS22PS4-GUI)
 - Tools: CyB1K Fake PKG Tools, Markus95 PS22PS4
