@@ -8,13 +8,21 @@ venv/
 dist/
 build/
 
-# Outputs / local tools (large / redistributable binaries)
+# Outputs / local tools (bundled in release zips, not git)
 out/
 **/bin/tools/
 **/bin/emulators/
 *.pkg
 Update.zip
 update/
+ps22psx/.wine-tmp/
+ps22psx/testdata/*.iso
+ps22psx/testdata/Midnight*
+
+# Swift / Xcode
+macos/**/.build/
+**/DerivedData/
+*.xcuserdata/
 
 # OS / IDE
 .DS_Store
@@ -24,3 +32,4 @@ update/
 
 # Wine
 .wine/
+.wine-ps22psx/

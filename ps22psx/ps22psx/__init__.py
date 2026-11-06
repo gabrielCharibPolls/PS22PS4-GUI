@@ -1,3 +1,3 @@
-"""PS22PSX — PS2 ISO/BIN → PS4/PS5 Classics fPKG (macOS / Windows / Linux)."""
+"""PS22PSX — PS2 ISO/BIN → PS4 Classics fPKG (macOS-first)."""
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"

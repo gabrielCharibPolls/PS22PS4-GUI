@@ -1,17 +1,9 @@
 # PS22PSX
 
-Cross-platform revival of [PS22PS4-GUI](https://github.com/Nazky/PS22PS4-GUI): build **PS2 → PS4 Classics fPKG** on **macOS**, Windows and Linux.  
-Works on **jailbroken PS4** and **exploited PS5** (HEN + PS4 FPKG Enabler / kstuff).
+macOS-first PS2 ISO/BIN → **PS4 Classics fPKG** builder (CLI + GUI).
 
-## Why a rewrite?
-
-The original app is VB.NET WinForms + Windows-only `.exe` tools. This package:
-
-- Runs on **macOS** (Wine only for Orbis publish tools)
-- Completes the old TODOs: **proper config maker**, **LUA maker**, **CLI**
-- Adds explicit `--target ps4|ps5` and console test docs
-
-Legacy VB sources stay in `../PS22PS4-GUI/` for reference.
+> PS5 support was removed: use PCSX2/PS5SX2 on exploited PS5 instead.  
+> This tool targets **jailbroken PS4** only.
 
 ## Quick start (macOS)
 
@@ -20,39 +12,38 @@ cd ps22psx
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 brew install imagemagick
-brew install --cask wine-stable   # for orbis-pub-cmd.exe
+# Wine (Gcenx) + bin/tools — see docs/SETUP_MACOS.md
 ps22psx doctor
 ```
 
-See [docs/SETUP_MACOS.md](docs/SETUP_MACOS.md).
+### Native Mac UI (SwiftUI)
 
-## CLI (TODOs done)
+Python reste le moteur (CLI). L’interface Mac native est dans `macos/PS22PSX` :
 
 ```bash
-# Inspect ISO/BIN
+cd macos/PS22PSX
+swift build -c release
+./.build/release/PS22PSX
+```
+
+## CLI
+
+```bash
 ps22psx info game.iso
-
-# Config maker
 ps22psx config --list
-ps22psx config --title-id SLUS-20001 --name "Ridge Racer V" -o game.conf
-
-# LUA maker
+ps22psx config --title-id SLUS-20001 --name "Game" -o game.conf
 ps22psx lua --title-id SLUS-20001 -o SLUS-20001_config.lua
-
-# Build PKG
 ps22psx create game.iso \
   --emulator path/to/emulator.pkg \
   --icon cover.png --background back.jpg \
-  --config game.conf --lua SLUS-20001_config.lua \
-  --output out --target ps5
-
-# GUI
+  --output out
 ps22psx gui
 ```
 
-## Console testing
+## Docs
 
-[docs/TESTING_CONSOLES.md](docs/TESTING_CONSOLES.md)
+- [docs/SETUP_MACOS.md](docs/SETUP_MACOS.md)
+- [docs/TESTING_PS4.md](docs/TESTING_PS4.md)
 
 ## Tests
 
@@ -64,4 +55,4 @@ pytest -q
 
 - Maintainer: [gabrielCharibPolls](https://github.com/gabrielCharibPolls)
 - Original GUI: [Nazky/PS22PS4-GUI](https://github.com/Nazky/PS22PS4-GUI)
-- Tools lineage: CyB1K PS4 Fake PKG Tools, Markus95 PS22PS4/PS22PS5
+- Tools: CyB1K Fake PKG Tools, Markus95 PS22PS4

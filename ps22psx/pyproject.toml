@@ -4,15 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ps22psx"
-version = "1.0.0"
-description = "Cross-platform PS2 ISO/BIN to PS4/PS5 Classics fPKG builder (macOS, Windows, Linux)"
+version = "1.1.0"
+description = "macOS-first PS2 ISO/BIN to PS4 Classics fPKG builder"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
-  { name = "PS22PSX contributors" }
+  { name = "gabrielCharibPolls" }
 ]
-keywords = ["ps2", "ps4", "ps5", "fpkg", "classics", "homebrew"]
+keywords = ["ps2", "ps4", "fpkg", "classics", "homebrew", "macos"]
 dependencies = [
   "Pillow>=10.0.0",
   "pycdlib>=1.14.0",

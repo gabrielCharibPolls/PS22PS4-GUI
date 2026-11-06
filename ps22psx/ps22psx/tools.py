@@ -1,4 +1,4 @@
-"""Locate packaging tools and run them (Wine on macOS/Linux)."""
+"""Locate packaging tools and run them (native ImageMagick + Wine for Orbis EXEs on macOS)."""
 
 from __future__ import annotations
 
@@ -10,11 +10,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-REQUIRED_EXES = (
-    "orbis-pub-cmd.exe",
-    "gengp4.exe",
-    "replhex.exe",
-)
+REQUIRED_EXES = ("orbis-pub-cmd.exe", "gengp4.exe")
 
 
 @dataclass
@@ -35,11 +31,20 @@ def find_wine() -> str | None:
         path = shutil.which(candidate)
         if path:
             return path
+    # Common local installs (Gcenx Wine Stable.app wrapper, Whisky shellenv)
+    home = Path.home()
+    extras = [
+        home / "bin" / "wine64",
+        home / "bin" / "wine",
+        home / "wine-gcenx" / "Wine Stable.app" / "Contents" / "Resources" / "wine" / "bin" / "wine",
+    ]
+    for p in extras:
+        if p.is_file():
+            return str(p)
     return None
 
 
 def find_magick() -> str | None:
-    # Prefer native ImageMagick on macOS/Linux
     for candidate in ("magick", "convert"):
         path = shutil.which(candidate)
         if path:
@@ -51,13 +56,12 @@ def default_tools_dir() -> Path:
     env = os.environ.get("PS22PSX_TOOLS")
     if env:
         return Path(env).expanduser().resolve()
-    # Common layouts: ./bin/tools next to CWD, or sibling of package
     cwd = Path.cwd()
     candidates = [
         cwd / "bin" / "tools",
         cwd / "tools",
-        Path(__file__).resolve().parents[2] / "bin" / "tools",
         Path(__file__).resolve().parents[1] / "bin" / "tools",
+        Path(__file__).resolve().parents[2] / "bin" / "tools",
     ]
     for c in candidates:
         if c.is_dir():
@@ -66,9 +70,16 @@ def default_tools_dir() -> Path:
 
 
 def load_toolchain(tools_dir: Path | None = None) -> Toolchain:
-    root = Path(tools_dir) if tools_dir else default_tools_dir()
+    root = Path(tools_dir).expanduser().resolve() if tools_dir else default_tools_dir()
     wine = None if platform.system() == "Windows" else find_wine()
     return Toolchain(root=root, wine=wine, magick=find_magick())
+
+
+def to_wine_path(path: Path | str) -> str:
+    p = Path(path).resolve()
+    if platform.system() == "Windows":
+        return str(p)
+    return "Z:" + str(p).replace("/", "\\")
 
 
 def run_tool(tc: Toolchain, exe_name: str, args: list[str], *, cwd: Path | None = None) -> None:
@@ -78,16 +89,24 @@ def run_tool(tc: Toolchain, exe_name: str, args: list[str], *, cwd: Path | None 
     else:
         if not tc.wine:
             raise RuntimeError(
-                "Wine is required on macOS/Linux to run PS4 packaging tools "
-                "(orbis-pub-cmd.exe, gengp4.exe). Install with: brew install --cask wine-stable"
+                "Wine is required on macOS to run orbis-pub-cmd.exe / gengp4.exe. "
+                "See docs/SETUP_MACOS.md (Gcenx Wine)."
             )
-        cmd = [tc.wine, str(exe), *args]
+        win_args = [
+            to_wine_path(a) if a.startswith("/") and Path(a).exists() else a for a in args
+        ]
+        # Apple Silicon: Gcenx wine is x86_64 — wrapper scripts usually handle arch -x86_64
+        cmd = [tc.wine, to_wine_path(exe), *win_args]
 
+    env = os.environ.copy()
+    env.setdefault("WINEDEBUG", "-all")
+    env.setdefault("WINEDLLOVERRIDES", "mscoree=d;mshtml=d")
     proc = subprocess.run(
         cmd,
         cwd=str(cwd) if cwd else None,
         capture_output=True,
         text=True,
+        env=env,
     )
     if proc.returncode != 0:
         raise RuntimeError(
@@ -105,7 +124,7 @@ def check_toolchain(tc: Toolchain) -> list[str]:
         if not (tc.root / name).is_file():
             problems.append(f"Missing {name} in {tc.root}")
     if platform.system() != "Windows" and not tc.wine:
-        problems.append("Wine not found (required on macOS/Linux)")
+        problems.append("Wine not found (required on macOS)")
     if not tc.magick and not (tc.root / "magick.exe").is_file():
         problems.append("ImageMagick not found (brew install imagemagick)")
     return problems

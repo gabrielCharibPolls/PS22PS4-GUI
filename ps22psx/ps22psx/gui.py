@@ -1,4 +1,4 @@
-"""Minimal cross-platform Tk GUI for PS22PSX."""
+"""Minimal Tk GUI for PS22PSX (PS2 → PS4 Classics fPKG)."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from .pkg_builder import BuildRequest, build_pkg
 class App(ttk.Frame):
     def __init__(self, master: tk.Tk) -> None:
         super().__init__(master, padding=12)
-        self.master.title("PS22PSX — PS2 → PS4/PS5 fPKG")
+        self.master.title("PS22PSX — PS2 → PS4 fPKG")
         self.grid(sticky="nsew")
         master.columnconfigure(0, weight=1)
         master.rowconfigure(0, weight=1)
@@ -24,33 +24,26 @@ class App(ttk.Frame):
         self.background = tk.StringVar()
         self.output = tk.StringVar(value=str(Path.cwd() / "out"))
         self.name = tk.StringVar()
-        self.target = tk.StringVar(value="ps4")
         self.config = tk.StringVar()
         self.lua = tk.StringVar()
 
-        r = 0
-        for label, var, cmd in (
-            ("ISO/BIN (multi ok)", self.images, self._pick_images),
+        rows = (
+            ("ISO/BIN", self.images, self._pick_images),
             ("Emulator PKG", self.emulator, lambda: self._pick_file(self.emulator, [("PKG", "*.pkg")])),
-            ("Icon / cover", self.icon, lambda: self._pick_file(self.icon, [("Images", "*.png *.jpg *.jpeg")])),
+            ("Icon", self.icon, lambda: self._pick_file(self.icon, [("Images", "*.png *.jpg *.jpeg")])),
             ("Background", self.background, lambda: self._pick_file(self.background, [("Images", "*.png *.jpg *.jpeg")])),
-            ("Output folder", self.output, self._pick_dir),
-            ("Config (optional)", self.config, lambda: self._pick_file(self.config, [("Config", "*.txt *.conf")])),
-            ("LUA (optional)", self.lua, lambda: self._pick_file(self.lua, [("LUA", "*.lua")])),
-        ):
+            ("Output", self.output, self._pick_dir),
+            ("Config (opt.)", self.config, lambda: self._pick_file(self.config, [("Config", "*.txt *.conf")])),
+            ("LUA (opt.)", self.lua, lambda: self._pick_file(self.lua, [("LUA", "*.lua")])),
+        )
+        for r, (label, var, cmd) in enumerate(rows):
             ttk.Label(self, text=label).grid(row=r, column=0, sticky="w")
             ttk.Entry(self, textvariable=var, width=64).grid(row=r, column=1, sticky="ew", padx=6)
             ttk.Button(self, text="…", width=3, command=cmd).grid(row=r, column=2)
-            r += 1
 
+        r = len(rows)
         ttk.Label(self, text="Game name").grid(row=r, column=0, sticky="w")
         ttk.Entry(self, textvariable=self.name).grid(row=r, column=1, sticky="ew", padx=6)
-        r += 1
-
-        ttk.Label(self, text="Target").grid(row=r, column=0, sticky="w")
-        ttk.Combobox(self, textvariable=self.target, values=("ps4", "ps5"), state="readonly", width=10).grid(
-            row=r, column=1, sticky="w", padx=6
-        )
         r += 1
 
         self.log = tk.Text(self, height=14, width=80)
@@ -59,7 +52,7 @@ class App(ttk.Frame):
         self.columnconfigure(1, weight=1)
         r += 1
 
-        self.btn = ttk.Button(self, text="Create PKG", command=self._start)
+        self.btn = ttk.Button(self, text="Create PS4 PKG", command=self._start)
         self.btn.grid(row=r, column=0, columnspan=3, sticky="ew")
 
     def _pick_images(self) -> None:
@@ -88,7 +81,6 @@ class App(ttk.Frame):
             return
         self.btn.configure(state="disabled")
         self.log.delete("1.0", "end")
-
         req = BuildRequest(
             images=imgs,
             emulator_pkg=Path(self.emulator.get()),
@@ -98,7 +90,6 @@ class App(ttk.Frame):
             game_name=self.name.get() or None,
             config_file=Path(self.config.get()) if self.config.get() else None,
             lua_file=Path(self.lua.get()) if self.lua.get() else None,
-            target=self.target.get(),
         )
 
         def worker() -> None:

@@ -1,10 +1,12 @@
-# Setup macOS (Apple Silicon / Intel)
+# Setup macOS
 
-PS22PSX runs natively on macOS. The Sony/Orbis packaging binaries (`orbis-pub-cmd.exe`, `gengp4.exe`, `replhex.exe`) are still Windows PE files, so **Wine** is required only for the final PKG compile step.
+PS22PSX is **macOS-first**: Python + native ImageMagick.  
+Sony Orbis tools (`orbis-pub-cmd.exe`, `gengp4.exe`) still need **Wine** (x86_64 / Rosetta).
 
 ## 1. Python
 
 ```bash
+cd ps22psx
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
@@ -16,48 +18,46 @@ pip install -e ".[dev]"
 brew install imagemagick
 ```
 
-## 3. Wine
+## 3. Wine (Gcenx)
+
+Homebrew `wine-stable` may be disabled by Gatekeeper. Use Gcenx builds:
+
+1. Download `wine-stable-*-osx64.tar.xz` from  
+   https://github.com/Gcenx/macOS_Wine_builds/releases  
+2. Extract, then either put `wine` on your `PATH`, or create `~/bin/wine64`:
 
 ```bash
-brew install --cask wine-stable
-# or: brew install wine-crossover / wine@staging depending on your Mac
-wine64 --version
+mkdir -p ~/bin
+cat > ~/bin/wine64 << 'EOF'
+#!/bin/bash
+export PATH="$HOME/wine-gcenx/Wine Stable.app/Contents/Resources/wine/bin:$PATH"
+exec arch -x86_64 wine "$@"
+EOF
+chmod +x ~/bin/wine64
+export PATH="$HOME/bin:$PATH"
 ```
 
-On first run, Wine may create a prefix (`~/.wine`). Accept the defaults.
+Rosetta is required on Apple Silicon.
 
-## 4. Packaging tools (`bin/tools`)
+## 4. Packaging tools
 
-Place the PS4 Fake PKG tools (same set used by the legacy GUI) in:
+Place CyB1K / Nazky tools in `bin/tools/`:
 
-```text
-bin/tools/
-  orbis-pub-cmd.exe
-  gengp4.exe
-  replhex.exe
-```
-
-You can override the path:
+- `orbis-pub-cmd.exe`
+- `gengp4.exe`
 
 ```bash
-export PS22PSX_TOOLS=/absolute/path/to/tools
+export PS22PSX_TOOLS=/absolute/path/to/tools   # optional override
 ps22psx doctor
 ```
 
 ## 5. Emulator base PKG
 
-Put at least one decrypted/base **PS2 Classics emulator `.pkg`** in a folder of your choice, then pass it with `--emulator`.
+Put a PS2 Classics emulator `.pkg` somewhere and pass `--emulator`.
 
-## 6. Verify
+## Verify
 
 ```bash
 ps22psx doctor
-ps22psx config --list
-ps22psx --help
-```
-
-## GUI
-
-```bash
 ps22psx gui
 ```
