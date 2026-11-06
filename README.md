@@ -21,8 +21,9 @@ Build a PS2 `.iso` / `.bin` into a **PS4 Classics fake PKG** for a **jailbroken 
 
 Release zips (tools + **JakV2** emulator included):
 
+- [macOS 1.1.0](https://github.com/gabrielCharibPolls/PS22PS4-GUI/releases/tag/v1.1.0-macOS) — `PS22PSX-1.1.0-macOS.zip`
+- [Windows 1.1.0](https://github.com/gabrielCharibPolls/PS22PS4-GUI/releases/tag/v1.1.0-Windows) — `PS22PSX-1.1.0-Windows.zip`
 - build locally: `./scripts/build-release.sh`
-- artifacts: `dist/PS22PSX-*-macOS.zip` and `dist/PS22PSX-*-Windows.zip`
 
 ### Quick start — macOS
 
