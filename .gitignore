@@ -1,0 +1,26 @@
+# Python
+**/__pycache__/
+**/*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+dist/
+build/
+
+# Outputs / local tools (large / redistributable binaries)
+out/
+**/bin/tools/
+**/bin/emulators/
+*.pkg
+Update.zip
+update/
+
+# OS / IDE
+.DS_Store
+.vs/
+*.user
+*.suo
+
+# Wine
+.wine/

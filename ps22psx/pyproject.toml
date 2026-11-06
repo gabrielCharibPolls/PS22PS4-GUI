@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ps22psx"
+version = "1.0.0"
+description = "Cross-platform PS2 ISO/BIN to PS4/PS5 Classics fPKG builder (macOS, Windows, Linux)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "PS22PSX contributors" }
+]
+keywords = ["ps2", "ps4", "ps5", "fpkg", "classics", "homebrew"]
+dependencies = [
+  "Pillow>=10.0.0",
+  "pycdlib>=1.14.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4.0",
+]
+
+[project.scripts]
+ps22psx = "ps22psx.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ps22psx*"]
+
+[tool.setuptools.package-data]
+ps22psx = ["../templates/**/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

@@ -1,63 +1,61 @@
-<p align="center"><img src="https://github.com/Nazky/PS22PS4-GUI/blob/main/PS22PS4-GUI/Ressource/ps2_icon_by_natstrodamus_deqcdvd.ico" width="100px"</p>
-<h1 align="center">PS22PS4-GUI</h1>
-<h2 align="center">A easy to use PS2 to PS4 PKG maker</h2>
+<p align="center"><img src="PS22PS4-GUI/Ressource/ps2_icon_by_natstrodamus_deqcdvd.ico" width="100px" /></p>
+<h1 align="center">PS22PS4-GUI → PS22PSX</h1>
+<h2 align="center">PS2 ISO/BIN → PS4 / PS5 Classics fPKG</h2>
 
 ---
+
+### Status 2026 revival
+
+This repository now includes **PS22PSX**, a cross-platform Python rewrite that runs on **macOS**, Windows and Linux.
+
+| Path | What |
+|------|------|
+| [`ps22psx/`](ps22psx/) | **Active** — CLI, GUI, config/LUA makers, Mac support |
+| [`PS22PS4-GUI/`](PS22PS4-GUI/) | Legacy VB.NET WinForms (Windows only, kept for reference) |
+
+### TODOs
+
+- [x] Add bin support
+- [x] Add proper config maker → `ps22psx config`
+- [x] Add proper LUA maker → `ps22psx lua`
+- [x] Add CLI support → `ps22psx create`
+- [x] Add cfgbin support (legacy)
+- [x] Add others emulators (legacy + `--emulator`)
+- [x] Add multi-disc support
+- [x] macOS support (Wine for Orbis tools)
+- [x] PS5 HEN target docs (`--target ps5`)
+
+### Quick start (macOS)
+
+```bash
+cd ps22psx
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+ps22psx doctor
+ps22psx gui
+```
+
+Full guides:
+
+- [ps22psx/docs/SETUP_MACOS.md](ps22psx/docs/SETUP_MACOS.md)
+- [ps22psx/docs/TESTING_CONSOLES.md](ps22psx/docs/TESTING_CONSOLES.md) — PS4 jailbreak & PS5 exploited
 
 ### F.A.Q
 
-#### What is this thing ?
+#### What is this?
 
-Hi it's a PS2 ISO to PS4 fake PKG, so you can play ps2 iso games on you'r ps4.
+Build a PS2 ISO/BIN into a PS4 Classics **fake PKG** so you can play on a **jailbroken PS4**, or an **exploited PS5** with PS4 FPKG Enabler / kstuff.
 
-#### All games are working ?
+#### Does it work on a normal PS5?
 
-No, there is a compatitibility list that you can find [here](https://www.psdevwiki.com/ps4/PS2_Classics_Emulator_Compatibility_List).
+**No.** Stock PS5 cannot install these packages.
 
-#### Why should i use this one and not a other PS2 to PS4 ?
+#### All games working?
 
-PS2-FPKG is closed source (i have try to find the src but i can't so i guess it is) and i don't really like to use closed source projects lol (the software work and is very good with a lot of features but it's closed source so yeah), a good alternative is PS2 Classis GUI by [TheDarkprogramer](https://github.com/xXxTheDarkprogramerxXx) (a very greate guy btw, luv) but there isn't a lot of options to choose and no support for BIN files, so this project try to combine both of the best world.
-
-#### Why in VB ?
-
-Because why not ? also if i can't update the src for some reason it's more easy to modify and update by others peoples.
-
-#### Can i help ?
-
-YES, you can open a issue or make a pull request.
-
-#### Ok but how do i use it ?
-
-Simply drag and drop a ISO or a BIN, a background image, a game cover and a folder then press "Create PKG" to get the PS4 PKG.
-
-#### But if i want to import a custom config or a LUA file ?
-
-Simply click on "file" then "import".
-
-#### Is this working on windows 7 ?
-
-Yes but you need to install [.NET 6.0.13](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.13-windows-x64-installer) (Big thanks to [Intervika Morozova](https://twitter.com/gamershhh_vika) for the info).
-
-#### It's detected as virus, why ?
-
-It's a false positive not really something i can fix, you can find the [virustotal link here
-](https://www.virustotal.com/gui/file/0d79fa3f02b7bfc5950c6b0a210746fa2d5fd5e51fc7ee7e08851a0fce1a6df1/detection), to use it make a execption on you'r anti virus software.
-
----
-
-### TODO
-
-- [x] Add bin support.
-- [ ] Add proper config maker.
-- [ ] Add proper LUA maker.
-- [ ] Add cli support.
-- [x] Add cfgbin support.
-- [x] Add others emulators.
-- [x] Add multi-disc support.
-
----
+No — see the [compatibility list](https://www.psdevwiki.com/ps4/PS2_Classics_Emulator_Compatibility_List).
 
 ### Credit
 
-- [CyB1K](https://github.com/CyB1K) | [PS4-Fake-PKG-Tools](https://github.com/CyB1K/PS4-Fake-PKG-Tools-3.87)
-- [Markus95](https://twitter.com/Markus00095) | [PS22PS4](http://www.logic-sunrise.com/news-1162997-ps4-ps2-2-ps4-v10-creer-vos-jeux-ps2-pour-ps4.html)
+- [Nazky](https://github.com/Nazky/PS22PS4-GUI) — original GUI
+- [CyB1K](https://github.com/CyB1K) — PS4 Fake PKG Tools
+- [Markus95](https://twitter.com/Markus00095) — PS22PS4 / PS22PS5
